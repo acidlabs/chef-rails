@@ -14,7 +14,7 @@ To cook with this kitchen you must follow four easy steps.
 
 ```bash
 git clone git://github.com/acidlabs/chef-rails.git chef
-cd chef	
+cd chef
 bundle install
 librarian-chef install
 ```
@@ -43,7 +43,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 
 ```json
 {
-// This is the list of the recipes that are going to be cooked.
+/* This is the list of the recipes that are going to be cooked. */
   "run_list": [
     "recipe[sudo]",
     "recipe[apt]",
