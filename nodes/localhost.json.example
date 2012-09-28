@@ -61,7 +61,6 @@
   "nginx": {
     "distribution": "oneiric",
     "components":   ["main"],
-    "default_site": false,
     "apps": {
       "app1": {
         "listen"     : [80],
