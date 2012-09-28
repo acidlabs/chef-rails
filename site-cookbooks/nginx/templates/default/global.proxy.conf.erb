@@ -1,0 +1,3 @@
+<%= node[:nginx][:proxy].map { |proxy_key, proxy_value| "proxy_#{proxy_key} #{proxy_value};" }.join("\n") %>
+
+<%= node[:nginx][:proxy_headers].map { |proxy_header_value| "proxy_set_header #{proxy_header_value};" }.join("\n") %>
