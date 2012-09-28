@@ -66,6 +66,12 @@
         "listen"     : [80],
         "server_name": "app1.example.com",
         "public_path": "/home/vagrant/public_html/app1/public",
+        "upstreams"  : [
+          {
+            "name"    : "app1",
+            "servers" : ["unix:/tmp/app1.sock max_fails=3 fail_timeout=1s"]
+          }
+        ],
         "locations": [
           {
             "path": "/",
@@ -77,7 +83,7 @@
               "proxy_redirect off;",
               "proxy_http_version 1.1;",
               "proxy_set_header Connection '';",
-              "proxy_pass http://localhost:8000;"
+              "proxy_pass http://app1;"
             ]
           }
         ]
@@ -86,6 +92,12 @@
         "listen"     : [80],
         "server_name": "app2.example.com",
         "public_path": "/home/vagrant/public_html/app2/public",
+        "upstreams"  : [
+          {
+            "name"    : "app2",
+            "servers" : ["unix:/tmp/app2.sock max_fails=3 fail_timeout=1s"]
+          }
+        ],
         "locations": [
           {
             "path": "/",
@@ -97,7 +109,7 @@
               "proxy_redirect off;",
               "proxy_http_version 1.1;",
               "proxy_set_header Connection '';",
-              "proxy_pass http://localhost:10000;"
+              "proxy_pass http://app2;"
             ]
           }
         ]

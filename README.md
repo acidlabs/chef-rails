@@ -14,7 +14,7 @@ To cook with this kitchen you must follow four easy steps.
 
 ```bash
 git clone git://github.com/acidlabs/chef-rails.git chef
-cd chef	
+cd chef
 bundle install
 librarian-chef install
 ```
@@ -81,7 +81,8 @@ For the very same reason, we’re going to exaplain the example for you to ride 
       }
     ],
 
-// If you want to create the databases manually, you can specify them here. otherwise, you can comment the databases array if you want.
+// If you want to create the databases manually, you can specify them here. otherwise,
+// you can comment the databases array if you want.
     "databases": [
       {
         "name"      : "app1",
@@ -99,7 +100,8 @@ For the very same reason, we’re going to exaplain the example for you to ride 
       }
     ],
 
-// This is for postgres to trust in local connections. You should leave this as is if you’re not sure what you’re doing.
+// This is for postgres to trust in local connections. You should leave this as is
+// if you’re not sure what you’re doing.
     "pg_hba": [
       "local  all   all                 trust",
       "host   all   all   127.0.0.1/32  md5",
@@ -107,7 +109,8 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     ]
   },
 
-// You must specify the ubuntu distribution by it’s name to configure the proper version of nginx, otherwise it’s going to fail.
+// You must specify the ubuntu distribution by it’s name to configure the proper version
+// of nginx, otherwise it’s going to fail.
   "nginx": {
     "distribution": "oneiric",
     "components":   ["main"],
@@ -119,6 +122,15 @@ For the very same reason, we’re going to exaplain the example for you to ride 
         "server_name": "app1.example.com",
 // Specify a public path
         "public_path": "/home/vagrant/public_html/app1/public",
+// You need to give a name to your upstream server and the path to it's sock file(s)
+// To give you an example: If you're using unicorn and declaring the sock file to be
+// /tmp/app1.sock, you should declare the upstream directive as below.
+        "upstreams"  : [
+          {
+            "name"    : "app1",
+            "servers" : ["unix:/tmp/app1.sock max_fails=3 fail_timeout=1s"]
+          }
+        ],
         "locations": [
           {
             "path": "/",
@@ -130,9 +142,8 @@ For the very same reason, we’re going to exaplain the example for you to ride 
               "proxy_redirect off;",
               "proxy_http_version 1.1;",
               "proxy_set_header Connection '';",
-// And never forget to set proxy pass to the actual ports you’re going to use.
-// To give you an example: If you’re using unicorn as the app server, between ports 8000-8003, your proxy pass should be declared as below.
-              "proxy_pass http://localhost:8000;"
+// And never forget to set proxy pass to the upstream you declared above.
+              "proxy_pass http://app1;"
             ]
           }
         ]
@@ -142,6 +153,12 @@ For the very same reason, we’re going to exaplain the example for you to ride 
         "listen"     : [80],
         "server_name": "app2.example.com",
         "public_path": "/home/vagrant/public_html/app2/public",
+        "upstreams"  : [
+          {
+            "name"    : "app2",
+            "servers" : ["unix:/tmp/app2.sock max_fails=3 fail_timeout=1s"]
+          }
+        ],
         "locations": [
           {
             "path": "/",
@@ -153,7 +170,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
               "proxy_redirect off;",
               "proxy_http_version 1.1;",
               "proxy_set_header Connection '';",
-              "proxy_pass http://localhost:10000;"
+              "proxy_pass http://app2;"
             ]
           }
         ]
