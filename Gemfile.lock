@@ -70,5 +70,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  chef (= 10.14.2)
   knife-solo
   librarian

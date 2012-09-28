@@ -24,7 +24,7 @@ librarian-chef install
 We need to copy chef-solo to any server we’re going to setup. For each server, execute
 
 ```bash
-knife prepare [user]@[host] -p [port]
+knife prepare [user]@[host] -p [port] --omnibus-version 10.14.2
 ```
 
 where
