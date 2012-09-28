@@ -122,7 +122,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
         "server_name": "app1.example.com",
 // Specify a public path
         "public_path": "/home/vagrant/public_html/app1/public",
-// You need to give a name to your upstream server and the path to it's sock file(s)
+// You need to give a name to your upstream server and the path to it's sock file(s).
 // To give you an example: If you're using unicorn and declaring the sock file to be
 // /tmp/app1.sock, you should declare the upstream directive as below.
         "upstreams"  : [
