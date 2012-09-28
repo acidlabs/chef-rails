@@ -58,22 +58,15 @@ directory node[:nginx][:sites_common_dir] do
   action :create
 end
 
-if node[:nginx][:default_site]
-  template "#{node[:nginx][:dir]}/sites-available/default" do
-    source "default-site.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-  end
-end
+# template "#{node[:nginx][:dir]}/sites-available/default" do
+#   source "default-site.erb"
+#   owner "root"
+#   group "root"
+#   mode "0644"
+# end
 
-unless node[:nginx][:default_site]
-  bash "delete default site" do
-    code %{
-      rm -f #{node[:nginx][:dir]}/sites-available/default
-      rm -f #{node[:nginx][:dir]}/sites-enabled/default
-    }
-  end
+file "#{node[:nginx][:dir]}/sites-available/default" do
+  action :delete
 end
 
 directory node[:nginx][:proxy_cache_dir] do
@@ -102,6 +95,6 @@ service "nginx" do
   action [:enable, :start]
 end
 
-nginx_site "default" do
-  action (node[:nginx][:default_site] ? :enable : :disable)
-end
+# nginx_site "default" do
+#   action (node[:nginx][:default_site] ? :enable : :disable)
+# end
