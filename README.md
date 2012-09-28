@@ -2,6 +2,10 @@
 
 Kitchen to setup an Ubuntu Server ready to roll with Nginx and Rails.
 
+## Requirements
+
+* Ubuntu 10.04+
+
 ## Usage
 
 To cook with this kitchen you must follow four easy steps.
@@ -35,10 +39,11 @@ If you take a look at the *nodes* folder, you’re going to see files called [ho
 
 The specs for each server needs to be defined in those files, and the structure is exactly the same as in the example.
 
-For the very same reason, we’re going to exaplain the example for you to ride on your on wheels later on.
+For the very same reason, we’re going to exaplain the example for you to ride on your own pony later on.
 
 ```json
 {
+// This is the list of the recipes that are going to be cooked.
   "run_list": [
     "recipe[sudo]",
     "recipe[apt]",
@@ -55,6 +60,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     "recipe[chef-rails]"
   ],
 
+// You must define who’s going to be the user(s) you’re going to use for deploy.
   "authorization": {
     "sudo": {
       "groups":       ["admin", "wheel", "sysadmin"],
@@ -63,6 +69,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     }
   },
 
+// You must define the username and password for postgres.
   "postgresql": {
     "users": [
       {
@@ -74,6 +81,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
       }
     ],
 
+// If you want to create the databases manually, you can specify them here. otherwise, you can comment the databases array if you want.
     "databases": [
       {
         "name"      : "app1",
@@ -91,6 +99,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
       }
     ],
 
+// This is for postgres to trust in local connections. You should leave this as is if you’re not sure what you’re doing.
     "pg_hba": [
       "local  all   all                 trust",
       "host   all   all   127.0.0.1/32  md5",
@@ -98,13 +107,17 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     ]
   },
 
+// You must specify the ubuntu distribution by it’s name to configure the proper version of nginx, otherwise it’s going to fail.
   "nginx": {
     "distribution": "oneiric",
     "components":   ["main"],
+// Here you should define all the apps you want nginx to serve for you in the server.
     "apps": {
       "app1": {
         "listen"     : [80],
+// Specify a server name
         "server_name": "app1.example.com",
+// Specify a public path
         "public_path": "/home/vagrant/public_html/app1/public",
         "locations": [
           {
@@ -117,11 +130,14 @@ For the very same reason, we’re going to exaplain the example for you to ride 
               "proxy_redirect off;",
               "proxy_http_version 1.1;",
               "proxy_set_header Connection '';",
+// And never forget to set proxy pass to the actual ports you’re going to use.
+// To give you an example: If you’re using unicorn as the app server, between ports 8000-8003, your proxy pass should be declared as below.
               "proxy_pass http://localhost:8000;"
             ]
           }
         ]
       },
+// Same as above.
       "app2": {
         "listen"     : [80],
         "server_name": "app2.example.com",
@@ -145,14 +161,27 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     }
   },
 
+// The ruby version you’re going to use. Valid values, by now, are 1.8, 1.9 and 1.9.1
   "languages": {
       "ruby": {
           "default_version": "1.9.1"
       }
   },
 
+// Finally, declare all the system packages required by the services and gems you’re using in your apps.
+// To give you an example: If you’re using nokogiri, the native extensions compilation will fail unless you have installed the development headers declared below.
   "chef-rails": {
     "packages": ["libxml2-dev", "libxslt1-dev"]
   }
 }
 ```
+
+### 4. Happy cooking
+
+We’re now ready to cook. For each server you want to setup, execute
+
+```bash
+knife cook [user]@[host] -p [port]
+```
+
+following the same criteria we defined in step **2**.
