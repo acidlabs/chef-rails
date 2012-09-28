@@ -7,9 +7,12 @@
     "recipe[runit]",
     "recipe[git]",
     "recipe[postgresql::server]",
+    "recipe[postgresql::server-dev]",
+    "recipe[postgresql::libpq]",
     "recipe[nginx::default]",
     "recipe[nginx::apps]",
-    "recipe[ruby]"
+    "recipe[ruby]",
+    "recipe[chef-rails]"
   ],
 
   "authorization": {
@@ -33,7 +36,14 @@
 
     "databases": [
       {
-        "name"      : "example",
+        "name"      : "app1",
+        "owner"     : "vagrant",
+        "template"  : "template0",
+        "encoding"  : "utf8",
+        "locale"    : "en_US.UTF8"
+      },
+      {
+        "name"      : "app2",
         "owner"     : "vagrant",
         "template"  : "template0",
         "encoding"  : "utf8",
@@ -100,10 +110,9 @@
       "ruby": {
           "default_version": "1.9.1"
       }
+  },
+
+  "chef-rails": {
+    "packages": ["libxml2-dev", "libxslt1-dev"]
   }
 }
-
-
-
-
-
