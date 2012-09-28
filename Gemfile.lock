@@ -25,7 +25,7 @@ GEM
     highline (1.6.15)
     ipaddress (0.8.0)
     json (1.6.1)
-    knife-solo (0.0.14)
+    knife-solo (0.0.13)
       chef (>= 0.10.10)
       librarian (~> 0.0.20)
       net-ssh (>= 2.1.3, < 2.3.0)
@@ -71,5 +71,5 @@ PLATFORMS
 
 DEPENDENCIES
   chef (= 10.14.2)
-  knife-solo
+  knife-solo (= 0.0.13)
   librarian
