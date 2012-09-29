@@ -3,5 +3,5 @@ node['chef-rails']['packages'].collect do |pkg|
 end
 
 bash "install or update bundle" do
-  "sudo gem install bundle --no-ri --no-rdoc"
+  code "sudo gem install bundle --no-ri --no-rdoc"
 end
