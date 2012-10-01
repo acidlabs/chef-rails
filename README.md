@@ -188,7 +188,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 // Finally, declare all the system packages required by the services and gems you’re using in your apps.
 // To give you an example: If you’re using nokogiri, the native extensions compilation will fail unless you have installed the development headers declared below.
   "chef-rails": {
-    "packages": ["libxml2-dev", "libxslt1-dev"]
+    "packages": ["libxml2-dev", "libxslt1-dev", "libncurses5-dev", "libncurses5-dev"]
   }
 }
 ```
