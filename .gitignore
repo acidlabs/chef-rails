@@ -6,3 +6,4 @@
 /roles/*.json
 /roles/*.rb
 /tmp/*
+/.vagrant
