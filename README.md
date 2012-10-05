@@ -112,6 +112,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 // You must specify the ubuntu distribution by it’s name to configure the proper version
 // of nginx, otherwise it’s going to fail.
   "nginx": {
+    "user":         "vagrant"
     "distribution": "oneiric",
     "components":   ["main"],
 // Here you should define all the apps you want nginx to serve for you in the server.
