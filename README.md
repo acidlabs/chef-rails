@@ -121,14 +121,14 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 // Specify a server name
         "server_name": "app1.example.com",
 // Specify a public path
-        "public_path": "/home/vagrant/public_html/app1/public",
+        "public_path": "/home/vagrant/public_html/app1/current/public",
 // You need to give a name to your upstream server and the path to it's sock file(s).
-// To give you an example: If you're using unicorn and declaring the sock file to be
-// /tmp/app1.sock, you should declare the upstream directive as below.
+// To give you an example: If you're using Unicorn and declaring the sock file to be
+// app1.sock, you should declare the upstream directive as below.
         "upstreams"  : [
           {
             "name"    : "app1",
-            "servers" : ["unix:/tmp/app1.sock max_fails=3 fail_timeout=1s"]
+            "servers" : ["unix:/home/vagrant/public_html/app1/shared/tmp/app1.sock max_fails=3 fail_timeout=1s"]
           }
         ],
         "locations": [
@@ -148,15 +148,20 @@ For the very same reason, we’re going to exaplain the example for you to ride 
           }
         ]
       },
-// Same as above.
+// Example for Thin server
       "app2": {
         "listen"     : [80],
         "server_name": "app2.example.com",
-        "public_path": "/home/vagrant/public_html/app2/public",
+        "public_path": "/home/vagrant/public_html/app2/current/public",
         "upstreams"  : [
           {
             "name"    : "app2",
-            "servers" : ["unix:/tmp/app2.sock max_fails=3 fail_timeout=1s"]
+            "servers" : [
+              "localhost:3000 max_fails=3 fail_timeout=1s",
+              "localhost:3001 max_fails=3 fail_timeout=1s",
+              "localhost:3002 max_fails=3 fail_timeout=1s",
+              "localhost:3003 max_fails=3 fail_timeout=1s"
+            ]
           }
         ],
         "locations": [

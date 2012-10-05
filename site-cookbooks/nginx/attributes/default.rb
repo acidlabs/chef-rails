@@ -159,7 +159,7 @@ default[:nginx][:ignore_invalid_headers] = "off"
 
 default[:nginx][:types_hash_max_size]           = 2048
 default[:nginx][:server_tokens]                 = "off"
-default[:nginx][:server_names_hash_bucket_size] = 64
+default[:nginx][:server_names_hash_bucket_size] = 128
 default[:nginx][:server_name_in_redirect]       = "off"
 
 default[:nginx][:gzip]                          = "on"
