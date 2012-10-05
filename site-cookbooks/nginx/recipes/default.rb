@@ -65,10 +65,6 @@ end
 #   mode "0644"
 # end
 
-file "#{node[:nginx][:dir]}/sites-available/default" do
-  action :delete
-end
-
 directory node[:nginx][:proxy_cache_dir] do
   owner node[:nginx][:user]
   group node[:nginx][:user]
