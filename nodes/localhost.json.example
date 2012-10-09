@@ -1,5 +1,5 @@
 {
-// This is the list of the recipes that are going to be cooked.
+  // This is the list of the recipes that are going to be cooked.
   "run_list": [
     "recipe[sudo]",
     "recipe[apt]",
@@ -7,16 +7,29 @@
     "recipe[ohai]",
     "recipe[runit]",
     "recipe[git]",
+
+    // If you want to use postgres, leave this as it is.
+    // Otherwise, comment the three lines below.
     "recipe[postgresql::server]",
     "recipe[postgresql::server-dev]",
     "recipe[postgresql::libpq]",
+
+    // If you want to use mysql, comment out the line below.
+    // Otherwise, leave it as it is.
+    // "recipe[mysql::server]",
+
+    // If you want to use Redis, comment out the two lines below.
+    // Otherwise, leave it as it is.
+    // "recipe[redis::install_from_package]",
+    // "recipe[redis::server]",
+
     "recipe[nginx::default]",
     "recipe[nginx::apps]",
     "recipe[ruby]",
     "recipe[chef-rails]"
   ],
 
-// You must define who’s going to be the user(s) you’re going to use for deploy.
+  // You must define who’s going to be the user(s) you’re going to use for deploy.
   "authorization": {
     "sudo": {
       "groups":       ["admin", "wheel", "sysadmin"],
@@ -25,7 +38,8 @@
     }
   },
 
-// You must define the username and password for postgres.
+  // You must define the username and password for postgres.
+  // Comment if you're not going to use it.
   "postgresql": {
     "users": [
       {
@@ -37,27 +51,8 @@
       }
     ],
 
-// If you want to create the databases manually, you can specify them here. otherwise,
-// you can comment the databases array if you want.
-    "databases": [
-      {
-        "name"      : "app1",
-        "owner"     : "vagrant",
-        "template"  : "template0",
-        "encoding"  : "utf8",
-        "locale"    : "en_US.UTF8"
-      },
-      {
-        "name"      : "app2",
-        "owner"     : "vagrant",
-        "template"  : "template0",
-        "encoding"  : "utf8",
-        "locale"    : "en_US.UTF8"
-      }
-    ],
-
-// This is for postgres to trust in local connections. You should leave this as is
-// if you’re not sure what you’re doing.
+    // This is for postgres to trust in local connections. You should leave this as is
+    // if you’re not sure what you’re doing.
     "pg_hba": [
       "local  all   all                 trust",
       "host   all   all   127.0.0.1/32  md5",
@@ -65,27 +60,35 @@
     ]
   },
 
-// You must specify the ubuntu distribution by it’s name to configure the proper version
-// of nginx, otherwise it’s going to fail.
+  // If you're going to use mysql, comment out the following lines.
+  // "mysql": {
+  //   "server_root_password"  : "asdf1234",
+  //   "server_repl_password"  : "asdf1234",
+  //   "server_debian_password": "asdf1234",
+  //   "server": {
+  //     "packages": ["mysql-server", "libmysqld-dev"]
+  //   }
+  // },
+
+  // You must specify the ubuntu distribution by it’s name to configure the proper version
+  // of nginx, otherwise it’s going to fail.
   "nginx": {
-    "user":         "vagrant"
-    "distribution": "oneiric",
-    "components":   ["main"],
-// Here you should define all the apps you want nginx to serve for you in the server.
+    "user"          : "vagrant",
+    "distribution"  : "oneiric",
+    "components"    : ["main"],
+
+    // Here you should define all the apps you want nginx to serve for you in the server.
     "apps": {
+
+      // Example for an application served by Thin server
       "app1": {
         "listen"     : [80],
-// Specify a server name
         "server_name": "app1.example.com",
-// Specify a public path
         "public_path": "/home/vagrant/public_html/app1/current/public",
-// You need to give a name to your upstream server and the path to it's sock file(s).
-// To give you an example: If you're using Unicorn and declaring the sock file to be
-// app1.sock, you should declare the upstream directive as below.
         "upstreams"  : [
           {
             "name"    : "app1",
-            "servers" : ["unix:/home/vagrant/public_html/app1/shared/tmp/app1.sock max_fails=3 fail_timeout=1s"]
+            "servers" : ["unix:/home/vagrant/public_html/app1/shared/pids/app1.sock max_fails=3 fail_timeout=1s"]
           }
         ],
         "locations": [
@@ -99,12 +102,9 @@
               "proxy_redirect off;",
               "proxy_http_version 1.1;",
               "proxy_set_header Connection '';",
-// And never forget to set proxy pass to the upstream you declared above.
               "proxy_pass http://app1;"
             ]
           },
-// Are you going to serve assets with Nginx?
-// If not, comment out the code below.
           {
             "path": "~ ^/(assets)/",
             "directives": [
@@ -115,7 +115,8 @@
           }
         ]
       },
-// Example for Thin server
+
+      // Example for an application served by Thin server
       "app2": {
         "listen"     : [80],
         "server_name": "app2.example.com",
@@ -144,21 +145,29 @@
               "proxy_set_header Connection '';",
               "proxy_pass http://app2;"
             ]
+          },
+          {
+            "path": "~ ^/(assets)/",
+            "directives": [
+              "gzip_static on;",
+              "expires max;",
+              "add_header Cache-Control public;"
+            ]
           }
         ]
       }
     }
   },
 
-// The ruby version you’re going to use. Valid values, by now, are 1.8, 1.9 and 1.9.1
+  // The ruby version you’re going to use. Valid values, by now, are 1.8, 1.9 and 1.9.1
   "languages": {
       "ruby": {
           "default_version": "1.9.1"
       }
   },
 
-// Finally, declare all the system packages required by the services and gems you’re using in your apps.
-// To give you an example: If you’re using nokogiri, the native extensions compilation will fail unless you have installed the development headers declared below.
+  // Finally, declare all the system packages required by the services and gems you’re using in your apps.
+  // To give you an example: If you’re using nokogiri, the native extensions compilation will fail unless you have installed the development headers declared below.
   "chef-rails": {
     "packages": ["libxml2-dev", "libxslt1-dev", "libncurses5-dev", "libncurses5-dev"]
   }
