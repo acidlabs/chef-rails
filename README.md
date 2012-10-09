@@ -112,6 +112,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 // You must specify the ubuntu distribution by it’s name to configure the proper version
 // of nginx, otherwise it’s going to fail.
   "nginx": {
+    "user":         "vagrant",
     "distribution": "oneiric",
     "components":   ["main"],
 // Here you should define all the apps you want nginx to serve for you in the server.
@@ -144,6 +145,16 @@ For the very same reason, we’re going to exaplain the example for you to ride 
               "proxy_set_header Connection '';",
 // And never forget to set proxy pass to the upstream you declared above.
               "proxy_pass http://app1;"
+            ]
+          },
+// Are you going to serve assets with Nginx?
+// If not, comment out the code below.
+          {
+            "path": "~ ^/(assets)/",
+            "directives": [
+              "gzip_static on;",
+              "expires max;",
+              "add_header Cache-Control public;"
             ]
           }
         ]
