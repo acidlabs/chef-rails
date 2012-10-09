@@ -71,7 +71,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
   // You must define who’s going to be the user(s) you’re going to use for deploy.
   "authorization": {
     "sudo": {
-      "groups":       ["admin", "wheel", "sysadmin"],
+      "groups":       ["vagrant"],
       "users":        ["vagrant"],
       "passwordless": true
     }
