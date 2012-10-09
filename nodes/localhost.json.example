@@ -71,9 +71,9 @@
   // },
 
   // If you're using redis, comment out below and modify as it suits.
-  "redis":{
-    "user": "vagrant"
-  },
+  // "redis":{
+  //   "user": "vagrant"
+  // },
 
   // You must specify the ubuntu distribution by it’s name to configure the proper version
   // of nginx, otherwise it’s going to fail.
