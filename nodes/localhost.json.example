@@ -18,11 +18,6 @@
     // Otherwise, leave it as it is.
     // "recipe[mysql::server]",
 
-    // If you want to use Redis, comment out the two lines below.
-    // Otherwise, leave it as it is.
-    // "recipe[redis::install_from_package]",
-    // "recipe[redis::server]",
-
     "recipe[nginx::default]",
     "recipe[nginx::apps]",
     "recipe[ruby]",
@@ -68,11 +63,6 @@
   //   "server": {
   //     "packages": ["mysql-server", "libmysqld-dev"]
   //   }
-  // },
-
-  // If you're using redis, comment out below and modify as it suits.
-  // "redis":{
-  //   "user": "vagrant"
   // },
 
   // You must specify the ubuntu distribution by it’s name to configure the proper version
@@ -174,6 +164,6 @@
   // Finally, declare all the system packages required by the services and gems you’re using in your apps.
   // To give you an example: If you’re using nokogiri, the native extensions compilation will fail unless you have installed the development headers declared below.
   "chef-rails": {
-    "packages": ["libxml2-dev", "libxslt1-dev", "libncurses5-dev", "libncurses5-dev"]
+    "packages": ["libxml2-dev", "libxslt1-dev", "libncurses5-dev", "libncurses5-dev", "redis-server"]
   }
 }

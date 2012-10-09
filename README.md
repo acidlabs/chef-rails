@@ -62,11 +62,6 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     // Otherwise, leave it as it is.
     // "recipe[mysql::server]",
 
-    // If you want to use Redis, comment out the two lines below.
-    // Otherwise, leave it as it is.
-    // "recipe[redis::install_from_package]",
-    // "recipe[redis::server]",
-
     "recipe[nginx::default]",
     "recipe[nginx::apps]",
     "recipe[ruby]",
@@ -124,7 +119,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     // Here you should define all the apps you want nginx to serve for you in the server.
     "apps": {
 
-      // Example for an application served by Thin server
+      // Example for an application served by Unicorn server
       "app1": {
         "listen"     : [80],
         "server_name": "app1.example.com",
@@ -205,15 +200,15 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 
   // The ruby version you’re going to use. Valid values, by now, are 1.8, 1.9 and 1.9.1
   "languages": {
-      "ruby": {
-          "default_version": "1.9.1"
-      }
+    "ruby": {
+      "default_version": "1.9.1"
+    }
   },
 
   // Finally, declare all the system packages required by the services and gems you’re using in your apps.
   // To give you an example: If you’re using nokogiri, the native extensions compilation will fail unless you have installed the development headers declared below.
   "chef-rails": {
-    "packages": ["libxml2-dev", "libxslt1-dev", "libncurses5-dev", "libncurses5-dev"]
+    "packages": ["libxml2-dev", "libxslt1-dev", "libncurses5-dev", "libncurses5-dev", "redis-server"]
   }
 }
 ```
