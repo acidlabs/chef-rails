@@ -8,14 +8,8 @@ SITE
       dmg (>= 0.0.0)
       runit (>= 0.0.0)
       yum (>= 0.0.0)
-    install_from (3.0.4)
-    metachef (3.0.4)
     ohai (1.1.2)
     openssl (1.0.0)
-    redis (3.0.4)
-      install_from (>= 0.0.0)
-      metachef (>= 0.0.0)
-      runit (>= 0.0.0)
     runit (0.15.0)
     yum (0.8.0)
 
@@ -25,6 +19,5 @@ DEPENDENCIES
   git (>= 0)
   ohai (>= 0)
   openssl (>= 0)
-  redis (>= 0)
   runit (>= 0)
 

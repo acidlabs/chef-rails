@@ -9,4 +9,4 @@ cookbook 'runit'
 cookbook 'ohai'
 cookbook 'git'
 cookbook 'openssl'
-cookbook 'redis'
+# cookbook 'redis' if you need redis uncomment this
