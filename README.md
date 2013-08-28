@@ -70,6 +70,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     "recipe[monit]"
     "recipe[monit::ssh]"
     "recipe[monit::nginx]"
+    "recipe[monit::postgresql]"
 
     "recipe[chef-rails]"
   ],
