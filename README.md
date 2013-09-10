@@ -67,11 +67,11 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     "recipe[ruby]",
 
     // If you want to use monit
-    "recipe[monit]"
-    "recipe[monit::mysql]"
-    "recipe[monit::nginx]"
-    "recipe[monit::postgresql]"
-    "recipe[monit::ssh]"
+    "recipe[monit]",
+    "recipe[monit::mysql]",
+    "recipe[monit::nginx]",
+    "recipe[monit::postgresql]",
+    "recipe[monit::ssh]",
 
     "recipe[chef-rails]"
   ],
