@@ -68,6 +68,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 
     // If you want to use monit
     "recipe[monit]",
+    "recipe[monit::apache2]",
     "recipe[monit::mysql]",
     "recipe[monit::nginx]",
     "recipe[monit::postgresql]",
