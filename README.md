@@ -68,9 +68,10 @@ For the very same reason, we’re going to exaplain the example for you to ride 
 
     // If you want to use monit
     "recipe[monit]"
-    "recipe[monit::ssh]"
+    "recipe[monit::mysql]"
     "recipe[monit::nginx]"
     "recipe[monit::postgresql]"
+    "recipe[monit::ssh]"
 
     "recipe[chef-rails]"
   ],
