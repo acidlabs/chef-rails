@@ -1,0 +1,13 @@
+# managed by chef, changes will be overwritten
+CHECK PROCESS redis-server WITH PIDFILE /var/run/redis/redis-server.pid
+  START PROGRAM "/usr/sbin/service redis-server start"
+  STOP PROGRAM "/usr/sbin/service redis-server stop"
+  GROUP redis-server
+  # under load a check may fail intermittently, so give it a few tries before restarting
+  IF FAILED UNIXSOCKET /var/run/mysqld/mysqld.sock PROTOCOL mysql THEN ALERT
+  IF FAILED UNIXSOCKET /var/run/mysqld/mysqld.sock PROTOCOL mysql THEN RESTART
+  IF FAILED HOST localhost PORT 6379 THEN ALERT
+  IF FAILED HOST localhost PORT 6379 THEN RESTART
+  IF TOTALCPU IS GREATER THAN 70% WITHIN 3 CYCLES THEN ALERT
+  IF TOTALCPU IS GREATER THAN 90% WITHIN 3 CYCLES THEN RESTART
+  IF 5 RESTARTS WITHIN 5 CYCLES THEN ALERT

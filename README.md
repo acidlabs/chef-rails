@@ -72,6 +72,7 @@ For the very same reason, we’re going to exaplain the example for you to ride 
     "recipe[monit::mysql]",
     "recipe[monit::nginx]",
     "recipe[monit::postgresql]",
+    "recipe[monit::redis-server]",
     "recipe[monit::ssh]",
 
     "recipe[chef-rails]"
