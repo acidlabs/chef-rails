@@ -7,3 +7,6 @@
 /roles/*.rb
 /tmp/*
 /.vagrant
+.rvmrc
+.ruby-version
+.ruby-gemset

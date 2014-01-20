@@ -14,5 +14,5 @@ bash "install or update bundle" do
 end
 
 bash "change owner and group of chef-solo tmp files" do
-  code "sudo chown -R #{node[:authorization][:sudo][:users].first}:#{node[:authorization][:sudo][:groups].first} /tmp/chef-solo"
+  code "sudo chown -R #{node[:authorization][:sudo][:users].first}:#{node[:authorization][:sudo][:groups].first} #{Chef::Config[:file_cache_path]}"
 end

@@ -1,5 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
-gem 'knife-solo', '0.0.13'
-gem 'chef', '10.14.2'
-gem 'librarian'
+gem 'librarian-chef'
+gem 'knife-solo'
