@@ -4,9 +4,10 @@
 site 'http://community.opscode.com/api/v1'
 
 cookbook 'apt'
+cookbook 'sudo'
 cookbook 'build-essential'
 cookbook 'runit'
 cookbook 'ohai'
 cookbook 'git'
 cookbook 'openssl'
-# cookbook 'redis' if you need redis uncomment this
+cookbook 'rvm', git: 'https://github.com/fnichol/chef-rvm'

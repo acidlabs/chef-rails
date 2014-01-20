@@ -3,6 +3,7 @@ SITE
   specs:
     apt (1.4.8)
     build-essential (1.1.0)
+    chef_gem (0.1.0)
     dmg (1.0.0)
     git (1.0.0)
       dmg (>= 0.0.0)
@@ -11,7 +12,16 @@ SITE
     ohai (1.1.2)
     openssl (1.0.0)
     runit (0.15.0)
+    sudo (2.3.0)
     yum (0.8.0)
+
+GIT
+  remote: https://github.com/fnichol/chef-rvm
+  ref: master
+  sha: 26ad5c043c70ea98855a049fbbacb7ffc5ad73e3
+  specs:
+    rvm (0.9.1)
+      chef_gem (>= 0.0.0)
 
 DEPENDENCIES
   apt (>= 0)
@@ -20,4 +30,6 @@ DEPENDENCIES
   ohai (>= 0)
   openssl (>= 0)
   runit (>= 0)
+  rvm (>= 0)
+  sudo (>= 0)
 
