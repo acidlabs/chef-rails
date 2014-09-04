@@ -242,7 +242,7 @@ CREATE USER deploy SUPERUSER ENCRYPTED PASSWORD '<deploy_user_password>';
 
 Here are some issues with current cookbooks recipes, we have to solve them, so it's kind a TODO list:
 
-#### Error executing action `create` on resource 'template[/etc/postgresql/9.3/main/postgresql.conf]'
+#### Error executing action \`create\` on resource 'template[/etc/postgresql/9.3/main/postgresql.conf]'
 
 ```bash
 ssh [user]@[host] -p [port]
