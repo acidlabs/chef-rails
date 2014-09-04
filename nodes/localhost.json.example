@@ -12,10 +12,13 @@
     "recipe[postgresql::server]",
     "recipe[nginx]",
     "recipe[nginx::apps]",
+    "recipe[redis::install_from_package]",
+    "recipe[redis::client]",
     "recipe[monit]",
     "recipe[monit::ssh]",
     "recipe[monit::nginx]",
     "recipe[monit::postgresql]",
+    "recipe[monit::redis-server]",
     "recipe[rvm::user]",
     "recipe[chef-rails]"
   ],
