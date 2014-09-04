@@ -16,7 +16,8 @@ We create our deploy user in deploy server adding our SSH keys:
 ```bash
 sudo adduser deploy --disabled-password
 # Add your SSH keys to deploy authorized_keys
-sudo vim .ssh/authorized_keys
+sudo mkdir /home/deploy/.ssh/
+sudo vim /home/deploy/.ssh/authorized_keys
 sudo chown deploy:deploy -R /home/deploy/
 ```
 
