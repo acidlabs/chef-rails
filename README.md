@@ -228,6 +228,12 @@ We’re now ready to cook. For each server you want to setup, execute
 bundle exec knife solo cook [user]@[host] -p [port]
 ```
 
+Remember to clean your kitchen after cook
+
+```bash
+bundle exec knife solo clean [user]@[host] -p [port]
+```
+
 following the same criteria we defined in step **2**.
 
 ### 5. Create PostgreSQL user for deploy
