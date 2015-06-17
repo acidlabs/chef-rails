@@ -44,9 +44,9 @@ GIT
 GIT
   remote: https://gitlab.acid.cl/acidlabs/chef-dpkg-packages.git
   ref: master
-  sha: 2c3303e2a2b325debde2ad5e6b6aa42bf48c1cd4
+  sha: 42ae7c1e2961cf268b08d2089f0cd66beaf78cbf
   specs:
-    dpkg_packages (0.1.6)
+    dpkg_packages (0.1.5)
 
 GIT
   remote: https://gitlab.acid.cl/acidlabs/chef-nginx.git
