@@ -1,6 +1,13 @@
 # Chef-Rails
 
-Kitchen to setup an Ubuntu Server ready to roll with Nginx, PostgreSQL, Redis Server and Rails.
+Kitchen to setup an Ubuntu Server ready to roll for Ruby on Rails stack:
+
+* Nginx
+* PostgreSQL
+* Redis
+* Memcached
+* Ruby with RVM
+* Phusion Passenger Standalone
 
 ## Requirements
 
