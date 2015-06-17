@@ -4,11 +4,15 @@
 site 'https://supermarket.getchef.com/api/v1'
 
 cookbook 'apt'
-cookbook 'build-essential'
-cookbook 'runit'
-cookbook 'ohai'
-cookbook 'git'
-cookbook 'openssl'
-cookbook 'postgresql'
-cookbook 'redis'
+cookbook 'dpkg_packages', git: "https://gitlab.acid.cl/acidlabs/chef-dpkg-packages.git"
+cookbook 'fail2ban'
+cookbook 'hostnames'
+cookbook 'memcached'
+cookbook 'nginx',         git: "https://gitlab.acid.cl/acidlabs/chef-nginx.git"
+cookbook 'passenger',     git: "https://gitlab.acid.cl/acidlabs/chef-passenger.git"
+cookbook 'postgresql',    git: "https://github.com/phlipper/chef-postgresql.git"
+cookbook 'redis',         git: "https://github.com/phlipper/chef-redis.git"
 cookbook 'rvm'
+cookbook 'ssh-hardening'
+cookbook 'sudo'
+cookbook 'timezone-ii'
