@@ -14,11 +14,10 @@ To cook with this kitchen you must follow four easy steps.
 
 We create our deploy user in deploy server adding our SSH keys:
 ```bash
-sudo adduser deploy --disabled-password
+sudo adduser deploy --gecos "" --disabled-password
 # Add your SSH keys to deploy authorized_keys
-sudo mkdir /home/deploy/.ssh/
-sudo vim /home/deploy/.ssh/authorized_keys
-sudo chown deploy:deploy -R /home/deploy/
+sudo cp -R .ssh/ /home/deploy/
+sudo chown -R deploy:deploy /home/deploy/
 ```
 
 ### 1. Prepare your local working copy
@@ -58,24 +57,19 @@ For the very same reason, we’re going to exaplain the example for you to ride 
   "run_list": [
     "recipe[apt]",
     "recipe[sudo]",
-    "recipe[build-essential]",
-    "recipe[ohai]",
-    "recipe[runit]",
-    "recipe[git]",
-    "recipe[postgresql]",
-    "recipe[postgresql::contrib]",
+    "recipe[hostnames]",
+    "recipe[ssh-hardening]",
+    "recipe[dpkg_packages]",
+    "recipe[timezone-ii]",
     "recipe[postgresql::server]",
-    "recipe[nginx]",
-    "recipe[nginx::apps]",
-    "recipe[redis::install_from_package]",
-    "recipe[redis::client]",
-    "recipe[monit]",
-    "recipe[monit::ssh]",
-    "recipe[monit::nginx]",
-    "recipe[monit::postgresql]",
-    "recipe[monit::redis-server]",
+    "recipe[postgresql::contrib]",
+    "recipe[postgresql::libpq]",
+    "recipe[nginx::server]",
     "recipe[rvm::user]",
-    "recipe[chef-rails]"
+    "recipe[passenger]",
+    "recipe[redis::server]",
+    "recipe[memcached]",
+    "recipe[fail2ban]"
   ],
 
   "automatic": {
@@ -85,137 +79,74 @@ For the very same reason, we’re going to exaplain the example for you to ride 
   // You must define who’s going to be the user(s) you’re going to use for deploy.
   "authorization": {
     "sudo": {
-      "groups"      : ["deploy","vagrant"],
+      "groups"      : ["sudo","admin"],
       "users"       : ["deploy","vagrant"],
       "passwordless": true
     }
   },
 
-  // You must define the password for postgres user.
-  // Leave config block commented untill next cook.
+  // Set hostname
+  "set_fqdn": "<myhostname>",
+
+  // List all the system packages required by the services and gems you’re using in your apps.
+  // To give you an example: If you’re using paperclip, the native extensions compilation will fail unless you have installed imagemagick declared below.
+  "dpkg_packages": {
+    "pkgs": {
+      "tzdata"     : { "action": "upgrade" },
+      "nodejs-dev" : { "action": "install" },
+      "imagemagick": { "action": "install" },
+      "htop"       : { "action": "install" }
+    }
+  },
+
+  // Select Timezone you want to configure
+  "tz": "America/Santiago",
+
+  // Postgresql configuration. You can create several users.
   "postgresql": {
-    "contrib": {
-      "extensions": ["pg_stat_statements"]
-    },
-    // "config": {
-    //   "shared_buffers": "125MB",
-    //   "shared_preload_libraries": "pg_stat_statements"
-    // },
-    "password"      : {
-      "postgres": "<postgres_user_password>"
-    }
-  },
-
-  // You must specify the ubuntu distribution by it’s name to configure the proper version
-  // of nginx, otherwise it’s going to fail.
-  "nginx": {
-    "user"          : "deploy",
-    "distribution"  : "trusty",
-    "components"    : ["main"],
-    "worker_rlimit_nofile": 30000,
-
-    // Here you should define all the apps you want nginx to serve for you in the server.
-    "apps": {
-      // Example for an application served by Unicorn server
-      "example.com": {
-        "listen"     : [80],
-        "server_name": "example.com www.example.com",
-        "public_path": "/home/deploy/production.example.com/current/public",
-        "upstreams"  : [
-          {
-            "name"    : "example.com",
-            "servers" : [
-              "unix:/home/deploy/production.example.com/shared/pids/example.com.sock max_fails=3 fail_timeout=1s"
-            ]
-          }
-        ],
-        "locations": [
-          {
-            "path": "/",
-            "directives": [
-              "proxy_set_header X-Forwarded-Proto $scheme;",
-              "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;",
-              "proxy_set_header X-Real-IP $remote_addr;",
-              "proxy_set_header Host $host;",
-              "proxy_redirect off;",
-              "proxy_http_version 1.1;",
-              "proxy_set_header Connection '';",
-              "proxy_pass http://example.com;"
-            ]
-          },
-          {
-            "path": "~ ^/(assets|fonts|system)/|favicon.ico|robots.txt",
-            "directives": [
-              "gzip_static on;",
-              "expires max;",
-              "add_header Cache-Control public;"
-            ]
-          }
-        ]
-      },
-
-      // Example for an application served by Thin server
-      "example2.com": {
-        "listen"     : [80],
-        "server_name": "example2.com www.example2.com",
-        "public_path": "/home/deploy/production.example2.com/current/public",
-        "upstreams"  : [
-          {
-            "name"    : "example2.com",
-            "servers" : [
-              "0.0.0.0:3000 max_fails=3 fail_timeout=1s",
-              "0.0.0.0:3001 max_fails=3 fail_timeout=1s"
-            ]
-          }
-        ],
-        "locations": [
-          {
-            "path": "/",
-            "directives": [
-              "proxy_set_header X-Forwarded-Proto $scheme;",
-              "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;",
-              "proxy_set_header X-Real-IP $remote_addr;",
-              "proxy_set_header Host $host;",
-              "proxy_redirect off;",
-              "proxy_http_version 1.1;",
-              "proxy_set_header Connection '';",
-              "proxy_pass http://example2.com;"
-            ]
-          },
-          {
-            "path": "~ ^/(assets|fonts|system)/|favicon.ico|robots.txt",
-            "directives": [
-              "gzip_static on;",
-              "expires max;",
-              "add_header Cache-Control public;"
-            ]
-          }
-        ]
-      }
-    }
-  },
-
-  // The ruby version you’re going to use and rvm user.
-  "rvm" : {
-    "user_installs": [
+    "shared_buffers": "256MB", // 1/4 of total memory is recommended
+    "shared_preload_libraries": "pg_stat_statements",
+    "users": [
       {
-        "user"         : "deploy",
-        "default_ruby" : "ruby-2.1.2"
+        "username": "deploy",
+        "password": "123456",
+        "superuser": true,
+        "login": true
       }
     ]
   },
 
-  // Monit configuration. Sets email, check period and delay since monit service start
-  "monit" : {
-    "notify_email"     : "email@example.com",
-    "poll_period"      : "60",
-    "poll_start_delay" : "120"
+  // Nginx default values configuration.
+  // Also you can specify your default site configuration.
+  "nginx": {
+    "user"                : "deploy",
+    "client_max_body_size": "2m",
+    "worker_processes"    : "auto",
+    "worker_connections"  : 768,
+    "repository"          : "ppa",
+    "site"                : {
+      "host"           : "<myhostname>",
+      "upstream_ports" : ["3000"],
+      "ip"             : "0.0.0.0",
+      "listen"         : "80"
+    }
   },
 
-  // Finally, declare all the system packages required by the services and gems you’re using in your apps.
-  // To give you an example: If you’re using paperclip, the native extensions compilation will fail unless you have installed imagemagick declared below.
-  "chef-rails": {
-    "packages": ["imagemagick", "nodejs-dev"]
+  // The default ruby version and gemset you’re going to use and rvm user.
+  "rvm" : {
+    "user_installs": [
+      {
+        "user"         : "deploy",
+        "default_ruby" : "<ruby-version>@<gemset>"
+      }
+    ]
+  },
+
+  // Fail2ban configuration to protect our server against SSH attack attempts
+  "fail2ban": {
+    "bantime" : 600,
+    "maxretry": 3,
+    "backend" : "auto"
   }
 }
 ```
@@ -235,37 +166,3 @@ Remember to clean your kitchen after cook
 ```bash
 bundle exec knife solo clean [user]@[host] -p [port]
 ```
-
-### 5. Create PostgreSQL user for deploy
-
-```bash
-sudo -u postgres psql
-CREATE USER deploy SUPERUSER ENCRYPTED PASSWORD '<deploy_user_password>';
-\q
-```
-
-### 6. Troubleshooting
-
-Here are some issues with current cookbooks recipes, we have to solve them, so it's kind a TODO list:
-
-#### Error executing action \`create\` on resource 'template[/etc/postgresql/9.3/main/postgresql.conf]'
-
-```bash
-ssh [user]@[host] -p [port]
-sudo pg_createcluster 9.3 main --start
-exit
-bundle exec knife solo cook [user]@[host] -p [port]
-```
-
-#### After first succesfull cooking
-
-Uncomment the following block in PostgreSQL configuration:
-
-```json
-    // "config": {
-    //   "shared_buffers": "125MB", // 1/4 of total memory is recommended
-    //   "shared_preload_libraries": "pg_stat_statements"
-    // },
-```
-
-Then, cook again.
