@@ -1,1 +1,0 @@
-default['chef-rails']['packages'] = []

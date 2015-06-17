@@ -1,1 +1,0 @@
-<%= node[:nginx][:ssl].map { |ssl_key, ssl_value| "ssl_#{ssl_key} #{ssl_value};" }.join("\n") %>
