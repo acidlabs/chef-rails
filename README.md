@@ -173,3 +173,19 @@ Remember to clean your kitchen after cook
 ```bash
 bundle exec knife solo clean [user]@[host] -p [port]
 ```
+
+### 5. Testing against a vagrant machine with knife-solo
+
+Initialize the vagrant machine
+```bash
+vagrant up
+```
+Then locate the ssh key used by the vagrant machine
+```bash
+vagrant ssh-config | grep IdentityFile | sed 's/.*IdentityFile//'
+```
+Finally connect and prepare && cook knife solo
+```bash
+knife solo prepare vagrant@127.0.0.1 -p 2222 -i /Your/vagrant/private_key
+knife solo cook vagrant@127.0.0.1 nodes/vagrant.json.example -p 2222 -i /Your/vagrant/private_key
+```
