@@ -58,7 +58,7 @@ The specs for each server needs to be defined in those files, and the structure 
 
 For the very same reason, we’re going to exaplain the example for you to ride on your own pony later on.
 
-```json
+```javascript
 {
   // This is the list of the recipes that are going to be cooked.
   "run_list": [
